@@ -4,17 +4,21 @@
 
 ## jetson
 
-英伟达提供用于jetson的[GPIO](https://github.com/NVIDIA/jetson-gpio)
+[Jetson 配置说明](./jetson/README.md)
 
-jetson-gpio控制口的使用参考[这篇笔记](https://rw4pssarx37.feishu.cn/wiki/L5u9ws22QiWTLUkGcAbcWIEqnMf?from=from_copylink)
+[Jetson GPIO图](./jetson/jetson_gpio.md)
+
+[Jetson GPIO python package](https://github.com/NVIDIA/jetson-gpio)
 
 ## orangepi-zero3
+
+[Orange Pi Zero 3 配置说明](./orangepi-zero3/README.md)
+
+[Orange Pi Zero 3 GPIO图](./orangepi-zero3/orangepi_zero3_gpio.md)
 
 [GPIO测试](http://www.orangepi.cn/orangepiwiki/index.php/Orange_Pi_Zero_3#26pin_GPIO.E5.8F.A3.E6.B5.8B.E8.AF.95)
 
 [wiringOP-Python的安装使用方法](http://www.orangepi.cn/orangepiwiki/index.php/Orange_Pi_Zero_3#wiringOP-Python.E7.9A.84.E5.AE.89.E8.A3.85.E4.BD.BF.E7.94.A8.E6.96.B9.E6.B3.95)
-
-zero3 gpio使用参考[这篇笔记](https://rw4pssarx37.feishu.cn/wiki/L5u9ws22QiWTLUkGcAbcWIEqnMf?from=from_copylink)
 
 # Api Endpoint
 
@@ -68,58 +72,3 @@ zero3 gpio使用参考[这篇笔记](https://rw4pssarx37.feishu.cn/wiki/L5u9ws22
 - **线程使用**：开门操作（`switch`函数）在一个独立的线程中执行，这允许Flask应用继续响应其他HTTP请求，包括对`/Open`端点的新请求。这意味着Web服务不会因为等待开门操作的完成而变得无响应。
 
 - 这个服务使用flask编写，由于flask服务器本身不支持多线程操作，但是开锁这个行为有5秒冷却期，如果直接在服务主线程中执行这个冷却操作，则会阻塞服务运行。所以引入线程和线程.
-
-# 配置开发环境 
-
-## 创建虚拟环境
-
-```bash
-python3 -m venv venv
-```
-
-## 激活虚拟环境
-
-  ```bash
-  source venv/bin/activate
-  ```
-
-## 安装依赖
-
-```bash
-pip install -r requirements.txt
-```
-
-## 离开虚拟环境
-
-```bash
-deactivate
-```
-
-# 启动服务
-配置systemd的单元文件，现在的文件存放在`/etc/systemd/system/`中，配置如下, 其中`ExecStart`字段按照实际的路径进行测试:
-
-```
-[Unit]
-Description=Smart Door Service
-After=syslog.target network.target remote-fs.target nss-lookup.target network-online.target
-Requires=network-online.target
-
-[Service]
-User=root
-Group=root
-WorkingDirectory=/root
-Environment="PATH=/home/xubai/SmartDoor/venv/bin"
-ExecStart=python3 /path/to/sample_xx.py
-Restart=always
-RestartSec=5
-StartLimitInterval=30
-StartLimitBurst=50
-
-[Install]
-WantedBy=multi-user.target
-```
-
-- `systemctl start smartdoor.service`启动服务
-  - `systemctl enable smartdoor.service`服务设置开机自启
-- `systemctl status smartdoor.service`查看服务运行状态
-- 现在配置了自动重启 
