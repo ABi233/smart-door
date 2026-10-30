@@ -1,5 +1,12 @@
 # Orangepi配置环境 
 
+## Wi-Fi 自动检查与恢复
+
+[wifi-watchdog 部署与维护说明](./wifi-watchdog/README.md)
+
+每分钟检查无线连接及局域网网关，异常时尝试重连，连续 10 次失败后重启系统。
+支持开机自启，异常日志持久化保存并自动轮转。
+
 ## 安装适配orangepi的wiringpi
 
 [wiringOP-Python的安装使用方法](http://www.orangepi.cn/orangepiwiki/index.php/Orange_Pi_Zero_3#wiringOP-Python.E7.9A.84.E5.AE.89.E8.A3.85.E4.BD.BF.E7.94.A8.E6.96.B9.E6.B3.95)

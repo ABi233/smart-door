@@ -1,0 +1,17 @@
+[Unit]
+Description=Check and recover wireless network
+After=NetworkManager.service
+Wants=NetworkManager.service
+RequiresMountsFor=/var/lib/wifi-watchdog
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/local/sbin/wifi-watchdog.py
+TimeoutStartSec=55
+RuntimeDirectory=wifi-watchdog
+RuntimeDirectoryMode=0700
+RuntimeDirectoryPreserve=yes
+StateDirectory=wifi-watchdog
+StateDirectoryMode=0700
+UMask=0077
